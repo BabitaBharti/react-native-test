@@ -2,12 +2,12 @@
 name: Appium tests on Android
 on:
  schedule:
- - cron: <redacted>
+   - cron: <redacted>
  workflow_dispatch:
 env:
  APK_PATH: <redacted>
 jobs:
-    ubuntu-runtime-probes:
+  ubuntu-runtime-probes:
     runs-on: ubuntu-latest
     outputs:
       java11_home: ${{ steps.get-java-home-11-x64.outputs.JAVA_HOME_11_X64 }}
