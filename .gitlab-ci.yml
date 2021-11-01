@@ -13,8 +13,10 @@ jobs:
     steps:
         - name: Checkout
           uses: actions/checkout@v2
-        - uses: actions/setup-node@master
-        - uses: c-hive/gha-yarn-cache@v1
+        - name: Install module
+          uses: actions/setup-node@master
+        - name: Install Yarn
+          uses: c-hive/gha-yarn-cache@v1
 
         - name: Install node modules
           run: |
