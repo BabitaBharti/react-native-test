@@ -3,7 +3,6 @@ name: test-react-app
 trigger: master
 pr: none
 
-variables: 
  
 stages:
   - ios
