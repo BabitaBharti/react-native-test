@@ -3,7 +3,7 @@ name: test-react-app
 trigger: none
 
 jobs:
-
+  ios:
     runs-on: ubuntu-latest
     name: Beta Distribution
     steps:
