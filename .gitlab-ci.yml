@@ -4,9 +4,9 @@ trigger: none
 
 jobs:
   ios:
-    runs-on: ubuntu-latest
-    name: Beta Distribution
-    steps:
+  runs-on: ubuntu-latest
+  name: Beta Distribution
+  steps:
     - name: Checkout
       uses: actions/checkout@v2
     - uses: actions/setup-node@master
