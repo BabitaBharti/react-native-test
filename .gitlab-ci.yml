@@ -1,10 +1,7 @@
 name: test-react-app
 
-on:
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - master
+trigger: master
+pr: none
 
 jobs:
   ios:
