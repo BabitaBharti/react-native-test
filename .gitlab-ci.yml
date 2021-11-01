@@ -5,20 +5,20 @@ stages:
 build_project:
   stage: build
   script:
-    - xcodebuild clean -project react-native-test.xcodeproj -scheme SchemeName | xcpretty
-    - xcodebuild test -project react-native-test.xcodeproj -scheme SchemeName -destination 'platform=iOS Simulator,name=iPhone 6s,OS=9.2' | xcpretty -s
+    - xcodebuild clean -project REACT-NATIVE-TEST.xcodeproj -scheme SchemeName | xcpretty
+    - xcodebuild test -project REACT-NATIVE-TEST.xcodeproj -scheme SchemeName -destination 'platform=iOS Simulator,name=iPhone 6s,OS=9.2' | xcpretty -s
   tags:
     - shared-macos-amd64
 
 archive_project:
   stage: archive
   script:
-    - xcodebuild clean archive -archivePath build/react-native-test -scheme SchemeName
-    - xcodebuild -exportArchive -exportFormat ipa -archivePath "build/react-native-test.xcarchive" -exportPath "build/react-native-test.ipa" -exportProvisioningProfile "ProvisioningProfileName"
+    - xcodebuild clean archive -archivePath build/REACT-NATIVE-TEST -scheme SchemeName
+    - xcodebuild -exportArchive -exportFormat ipa -archivePath "build/REACT-NATIVE-TEST.xcarchive" -exportPath "build/REACT-NATIVE-TEST.ipa" -exportProvisioningProfile "ProvisioningProfileName"
   only:
     - master
   artifacts:
     paths:
-    - build/react-native-test.ipa
+    - build/REACT-NATIVE-TEST.ipa
   tags:
     - shared-macos-amd64
