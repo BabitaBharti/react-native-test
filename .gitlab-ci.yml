@@ -47,8 +47,8 @@ build-and-upload-apk:
             id: apk-cache
             uses: actions/cache@v2
             with:
-            path: ${{ env.APK_PATH }}
-            key: <redacted>
+              path: ${{ env.APK_PATH }}
+              key: <redacted>
           - name: Install node
             if: steps.apk-cache.outputs.cache-hit != 'true'
             uses: actions/setup-node@v2
