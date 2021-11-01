@@ -3,8 +3,11 @@ name: test-react-app
 trigger: master
 pr: none
 
-jobs:
-  ios:
+stages:
+  - ios
+
+ios: 
+    stage: ios
     runs-on: ubuntu-latest
     name: Beta Distribution
     steps:
