@@ -8,7 +8,7 @@ build_project:
     - xcodebuild clean -project react-native-test.xcodeproj -scheme SchemeName | xcpretty
     - xcodebuild test -project react-native-test.xcodeproj -scheme SchemeName -destination 'platform=iOS Simulator,name=iPhone 6s,OS=9.2' | xcpretty -s
   tags:
-    - macOS shared runner
+    - shared-macos-amd64
 
 archive_project:
   stage: archive
@@ -21,4 +21,4 @@ archive_project:
     paths:
     - build/react-native-test.ipa
   tags:
-    - macOS shared runner
+    - shared-macos-amd64
