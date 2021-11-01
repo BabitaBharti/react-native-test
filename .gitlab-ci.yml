@@ -8,7 +8,8 @@ build_project:
     - xcodebuild clean -project REACT-NATIVE-TEST.xcodeproj -scheme SchemeName | xcpretty
     - xcodebuild test -project REACT-NATIVE-TEST.xcodeproj -scheme SchemeName -destination 'platform=iOS Simulator,name=iPhone 6s,OS=9.2' | xcpretty -s
   tags:
-    - shared-macos-amd64
+    # - shared-macos-amd64
+    - gitlab-org
 
 archive_project:
   stage: archive
