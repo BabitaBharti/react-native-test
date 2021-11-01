@@ -1,9 +1,6 @@
+name: test-react-app
 
-
-on:
-  push:
-    branches:
-      - main
+trigger: none
 
 jobs:
 
