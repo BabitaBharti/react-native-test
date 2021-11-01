@@ -1,0 +1,137 @@
+ 
+name: Appium tests on Android
+on:
+ schedule:
+ - cron: <redacted>
+ workflow_dispatch:
+env:
+ APK_PATH: <redacted>
+jobs:
+    ubuntu-runtime-probes:
+    runs-on: ubuntu-latest
+    outputs:
+      java11_home: ${{ steps.get-java-home-11-x64.outputs.JAVA_HOME_11_X64 }}
+      node_version: ${{ steps.get-node-version.outputs.NODE_VERSION }}
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+      - name: Get node version
+        run: sed -e 's/^/::set-output name=NODE_VERSION::/' .nvmrc
+        id: get-node-version
+      - name: Get Java 11 home
+        run: echo "::set-output name=JAVA_HOME_11_X64::${JAVA_HOME_11_X64}"
+        id: get-java-home-11-x64
+ macos-runtime-probes:
+    runs-on: macos-latest
+    outputs:
+      java11_home: ${{ steps.get-java-home-11-x64.outputs.JAVA_HOME_11_X64 }}
+      node_version: ${{ steps.get-node-version.outputs.NODE_VERSION }}
+    steps:
+        - name: Check out the code
+          uses: actions/checkout@v2
+        - name: Get node version
+          run: sed -e 's/^/::set-output name=NODE_VERSION::/' .nvmrc
+          id: get-node-version
+        - name: Get Java 11 home
+          run: echo "::set-output name=JAVA_HOME_11_X64::${JAVA_HOME_11_X64}"
+          id: get-java-home-11-x64
+build-and-upload-apk:
+    runs-on: ubuntu-latest
+    needs: ubuntu-runtime-probes
+    env:
+        JAVA_HOME: ${{ needs.ubuntu-runtime-probes.outputs.java11_home }}
+    steps:
+          - name: Check out the code
+            uses: actions/checkout@v2
+          - name: APK cache
+            id: apk-cache
+            uses: actions/cache@v2
+            with:
+            path: ${{ env.APK_PATH }}
+            key: <redacted>
+          - name: Install node
+            if: steps.apk-cache.outputs.cache-hit != 'true'
+            uses: actions/setup-node@v2
+            with:
+              node-version: ${{ needs.ubuntu-runtime-probes.outputs.node_version }}
+              cache: yarn
+          - name: Install dependencies
+            if: steps.apk-cache.outputs.cache-hit != 'true'
+            run: <redacted>
+          - name: Assemble the e2e APK
+            if: steps.apk-cache.outputs.cache-hit != 'true'
+            run: <redacted> 
+          - name: Publish APK
+            uses: actions/upload-artifact@v2
+            with:
+                name: <redacted>
+                path: ${{ env.APK_PATH }}
+run-apk-tests-in-emulator:
+    runs-on: macos-latest
+    needs:
+      - macos-runtime-probes
+      - build-and-upload-apk   
+    env:
+       JAVA_HOME: ${{ needs.macos-runtime-probes.outputs.java11_home }}
+    LOG_DIR: logs
+    steps:
+          - name: Check out the code
+            uses: actions/checkout@v2
+          - name: Install node
+            uses: actions/setup-node@v2
+            with:
+              node-version: ${{ needs.macos-runtime-probes.outputs.node_version }}
+            cache: yarn
+          - name: Install Appium and dependencies
+            run: <redacted>
+          - name: Install SDK for Nexus5X
+            run: <redacted>
+          - name: Create Nexus 5X AVD
+            run: <redacted>
+          - name: Create directory for background process logs
+            run: mkdir ${{ env.LOG_DIR }}
+          - name: "[background] run emulated Nexus 5X"
+            id: emulator
+            run: <redacted>
+          - name: "[background] run Appium server"
+            id: appium-server
+            run: <redacted>
+          - name: Wait for the emulator to finish booting
+            run: <redacted>
+          - name: Fetch built APK
+            uses: actions/download-artifact@v2
+            with:
+              name: <redacted>
+ # actions/upload-artifact does not preserve the path for individual files. Why???
+          - name: Move APK where it's supposed to be
+            run: |
+              mkdir -p $(dirname ${{ env.APK_PATH }})
+              mv $(basename ${{ env.APK_PATH }}) $(dirname ${{ env.APK_PATH }})
+          - name: Run Appium canary tests
+            run: <redacted>
+          - name: Run all Appium tests
+            run: <redacted>
+          - name: Save test artifacts
+            uses: actions/upload-artifact@v2
+            if: failure()
+            with:
+              name: test-artifacts
+              path: appium/artifacts/**/*
+              if-no-files-found: ignore
+              retention-days: 7
+          - name: "[background cleanup] Kill the emulator"
+            if: always()
+            run: <redacted>
+          - name: "[background cleanup] Kill the Appium server"
+            if: always()
+            run: <redacted>
+          - name: Save logs as an artifact
+            uses: actions/upload-artifact@v2
+            if: always()
+            with:
+                name: <redacted>
+                path: ${{ env.LOG_DIR }}/**/*
+                if-no-files-found: error
+                retention-days: 7
+    
+ 
