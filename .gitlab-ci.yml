@@ -1,4 +1,4 @@
-name: react-native-test-app
+
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  beta-distribution:
+
     runs-on: ubuntu-latest
     name: Beta Distribution
     steps:
