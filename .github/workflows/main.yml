@@ -33,19 +33,13 @@ jobs:
         run: yarn
 
 
-      - name: Set fastlane to CI mode
-        uses: maierj/fastlane-action@v1.4.0
-        with:
-          lane: "setupCI"
-          subdirectory: ./HonestyBox/ios
-
       - name: Build and deploy to App Center [if PR merged]
         uses: maierj/fastlane-action@v1.4.0
         if: github.event.pull_request.merged
         with:
           lane: "build_and_deploy"
           options: '{ "is_ci": true }'
-          subdirectory: ./HonestyBox/ios
+          subdirectory: .
         env:
           APPCENTER_IOS_APP_NAME: "My-Cool-App"
           IOS_CERT_GIT_LOCATION: "git@github.com:my-cool-org/my-cool-app-certificates.git"
