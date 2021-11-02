@@ -33,11 +33,6 @@ jobs:
         run: yarn
 
 
-      - name: Set SSH private key in our build environment. This is for the repo that contains our iOS certificates
-        uses: webfactory/ssh-agent@v0.2.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_MATCH_REPO_PRIVATE_KEY }}
-
       - name: Set fastlane to CI mode
         uses: maierj/fastlane-action@v1.4.0
         with:
